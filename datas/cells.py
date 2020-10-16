@@ -318,7 +318,7 @@ CELLS = {
         "cie_price" : {
             0 : 4,
             1 : 10
-        }
+        },
         "rent" : None,
         "mortgage" : 0,
         "house_price" : 0,
@@ -726,7 +726,7 @@ CELLS = {
         "cie_price" : {
             0 : 4,
             1 : 10
-        }
+        },
         "rent" : None,
         "mortgage" : 0,
         "house_price" : 0,
@@ -1024,7 +1024,10 @@ CELLS = {
         "draw_chance" : False,
         "draw_community" : False,
         "go_to_jail" : False
-    },
+    }    
+}
+
+CELL_GROUPS = {
     101 : "Prison", # 11
     102 : "Les gares", # 6 + 16 + 26 + 36
     103 : "Les Cies", # 13 + 29
@@ -1036,5 +1039,4 @@ CELLS = {
     109 : "Jaune", # 27 + 28 + 30
     110 : "Vert", # 32 + 33 + 35
     111 : "Bleu fonce" # 38 + 40
-    
 }

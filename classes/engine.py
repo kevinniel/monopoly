@@ -10,6 +10,7 @@ from classes.dices import Dices
 from classes.community import Community
 from classes.chance import Chance
 from classes.bank import Bank
+from classes.cell import Cell
 
 class Engine:
 
@@ -31,6 +32,11 @@ class Engine:
 
         # create bank
         self.bank = Bank()
+
+        # create cells
+        self.cells = []
+        for key, value in CELLS.items():
+            self.cells.append(Cell(value))
 
     def _init_communities(self):
         """ Method that init the community cards """
