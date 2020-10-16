@@ -1,62 +1,55 @@
-# coding: utf-8
-
-import random
-
-from datas.cells import CELLS
-from datas.community import COMMUNITY
-from datas.chance import CHANCE
-
-from classes.dices import Dices
-from classes.community import Community
-from classes.chance import Chance
-from classes.bank import Bank
-from classes.cell import Cell
+from classes.board import Board
+from classes.player import Player
 
 class Engine:
 
     def __init__(self):
-        # print(CELLS)
-        # print(COMMUNITY)
-        # print(CHANCE)
+        # instanciate board
+        self.board = Board()
+        self.players = []
+        self.player_count = 0
+        self.playing = 0
+        self.launch_game()
+    
+    def launch_game(self):
+        # create players
+        self._create_players()
 
-        # create dices
-        self.dices = Dices()
+        # start game
+        self.start_round()
 
-        # create community array to store community cards
-        self.community = []
-        self._init_communities()
+    def start_round(self):
+        # affichage de l'état du joueur
+        self.players[self.playing].print_state(self.board)
+        # lancement des dés
+        self.board.dices.launch_dices()
+        # déplacement du joueur
+        self.players[self.playing].move_count(self.board)
+        # TODO => ACTIONS
+        # tour suivant
+        self._next_player()
 
-        # create chance array to store chance cards
-        self.chance = []
-        self._init_chances()
+    def _next_player(self):
+        if self.board.dices.is_double:
+            # si le dernier coup est un double le même joueur rejoue
+            self.start_round()
+        else:
+            # sinon on passe au joueur suivant
+            self.playing += 1
+            if self.playing == len(self.players):
+                self.playing = 0
+            self.start_round()
 
-        # create bank
-        self.bank = Bank()
+    def _create_players(self):
+        self._add_player()
+        while self.player_count < 4:
+            add_another_player = input("souhaitez vous ajouter un autre joueur ? (o/n) ")
+            if add_another_player == "o":
+                self._add_player()
+            else:
+                self.player_count = 4
 
-        # create cells
-        self.cells = []
-        for key, value in CELLS.items():
-            self.cells.append(Cell(value))
-
-    def _init_communities(self):
-        """ Method that init the community cards """
-        # instanciation of objects
-        self._instanciate_communities()
-        # shuffle cards
-        random.shuffle(self.community)
-
-    def _instanciate_communities(self):
-        """ Method that instanciate the community cards """
-        for id, card in COMMUNITY.items():
-            self.community.append(Community(id, card))
-
-    def _init_chances(self):
-        """ Method that init the chance cards """
-        # instanciation of objects
-        self._instanciate_chances()
-        # shuffle cards
-        random.shuffle(self.chance)
-
-    def _instanciate_chances(self):
-        for id, card in CHANCE.items():
-            self.chance.append(Chance(id, card))
+    def _add_player(self):
+        name = input("saisissez le nom du joueur : ")
+        self.players.append(Player(name))
+        self.player_count += 1
